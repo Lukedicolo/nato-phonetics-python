@@ -7,9 +7,9 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         quote = request.form['quote']
-        return redirect(url_for('index', result=result))
-
-    result = generate_nato(quote)
+        return redirect(url_for('index', result=generate_nato(quote)))
+    
+    result = request.args.get("result")
     return render_template('index.html', result=result)
 
 
@@ -28,8 +28,11 @@ def generate_nato(quote):
     '2': 'Two',    '3': 'Three',   '4': 'Four',
     '5': 'Five',   '6': 'Six',     '7': 'Seven',
     '8': 'Eight',  '9': 'Nine',    '0': 'Zero', 
-    ' ': '  ','-': 'dash',    '.': 'dot',
+    ' ': '  ',     '-': 'dash',    '.': 'dot',
     '/': 'slash',  ',': 'comma'}
-
-    res = [dict[x] for x in list(quote.upper())]
-    return ' '.join(res)
+    if quote: 
+        print(quote)
+        res = [dict[x] for x in list(quote.upper())]
+        print(res)
+        return ' '.join(res) 
+    else: return None
